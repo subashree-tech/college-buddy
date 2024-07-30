@@ -6,6 +6,7 @@ import tiktoken
 from tiktoken import get_encoding
 import uuid
 import time
+from openai import OpenAI
 
 # Access your API key
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
