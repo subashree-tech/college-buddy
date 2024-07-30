@@ -15,6 +15,7 @@ INDEX_NAME = "college-buddy"
 
 # Initialize OpenAI
 openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Initialize Pinecone
 pc = Pinecone(api_key=PINECONE_API_KEY)
@@ -49,11 +50,11 @@ def num_tokens_from_string(string: str, encoding_name: str = "cl100k_base") -> i
 
 # Function to get embeddings
 def get_embedding(text):
-    response = openai.Embedding.create(
-        input=[text],
-        model="text-embedding-ada-002"
-    )
-    return response['data'][0]['embedding']
+    response = client.embeddings.create(
+        model="text-embedding-ada-002",
+        input=text
+            )
+    return response.data[0].embedding
 
 def upsert_to_pinecone(text, file_name, file_id):
     chunks = [text[i:i+8000] for i in range(0, len(text), 8000)]  # Split into 8000 character chunks
@@ -85,14 +86,14 @@ def get_answer(query):
     context = query_pinecone(query)
     max_context_tokens = 3000
     truncated_context = truncate_text(context, max_context_tokens)
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are an AI assistant focused on answering questions based on the provided context."},
             {"role": "user", "content": f"Context: {truncated_context}\n\nQuestion: {query}"}
         ]
     )
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message.content.strip()
 
 # Streamlit Interface
 st.set_page_config(page_title="College Buddy Assistant", layout="wide")
