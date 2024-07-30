@@ -6,9 +6,7 @@ import tiktoken
 from tiktoken import get_encoding
 import uuid
 import time
-from dotenv import load_dotenv
-# Load environment variables from .env file
-load_dotenv()
+
 # Access your API key
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
