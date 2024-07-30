@@ -111,7 +111,7 @@ with st.sidebar:
             total_token_count += token_count
             
             # Upsert to Pinecone
-            upsert_to_pinecone(transcript_text, uploaded_file.name, file_id)
+            upsert_to_pinecone(text, uploaded_file.name, file_id)
             
             st.text(f"Uploaded: {uploaded_file.name}")
             st.text(f"File ID: {file_id}")
