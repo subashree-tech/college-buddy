@@ -1,1 +1,7 @@
-
+python-docx
+streamlit
+openai
+tiktoken
+uuid
+TIME-python
+pinecone-client
