@@ -108,8 +108,8 @@ with st.sidebar:
         total_token_count = 0
         for uploaded_file in uploaded_files:
             file_id = str(uuid.uuid4())
-            transcript_text = extract_text_from_docx(uploaded_file)
-            token_count = num_tokens_from_string(transcript_text)
+            text = extract_text_from_docx(uploaded_file)
+            token_count = num_tokens_from_string(text)
             total_token_count += token_count
             
             # Upsert to Pinecone
