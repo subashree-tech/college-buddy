@@ -143,10 +143,12 @@ with st.sidebar:
         st.text(f"Total token count: {total_token_count}")
 # Main content area
 st.header("Popular Questions")
-# Randomly select 3 questions
-selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
-for question in selected_questions:
-    if st.button(question):
+# Initialize selected questions in session state
+if 'selected_questions' not in st.session_state:
+    st.session_state.selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
+# Display popular questions
+for question in st.session_state.selected_questions:
+    if st.button(question, key=question):
         with st.spinner("Searching for the best answer..."):
             answer = get_answer(question)
             st.subheader("Answer:")
