@@ -7,6 +7,7 @@ from tiktoken import get_encoding
 import uuid
 import time
 from openai import OpenAI
+import random 
 # Access your API key
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
