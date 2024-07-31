@@ -7,7 +7,7 @@ from tiktoken import get_encoding
 import uuid
 import time
 from openai import OpenAI
-import random 
+import random
 # Access your API key
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 PINECONE_API_KEY = st.secrets["PINECONE_API_KEY"]
@@ -59,7 +59,7 @@ def get_embedding(text):
     response = client.embeddings.create(
         model="text-embedding-ada-002",
         input=text
-            )
+    )
     return response.data[0].embedding
 def upsert_to_pinecone(text, file_name, file_id):
     chunks = [text[i:i+8000] for i in range(0, len(text), 8000)]  # Split into 8000 character chunks
@@ -147,8 +147,15 @@ st.header("Popular Questions")
 selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
 for question in selected_questions:
     if st.button(question):
-        answer = get_answer(question)
-        st.write(answer)
+        with st.spinner("Searching for the best answer..."):
+            answer = get_answer(question)
+            st.subheader("Answer:")
+            st.write(answer)
+        # Add to chat history
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
+        st.session_state.chat_history.append((question, answer))
+st.header("Ask Your Own Question")
 user_query = st.text_input("What would you like to know about the uploaded documents?")
 if st.button("Get Answer"):
     if user_query:
@@ -156,14 +163,14 @@ if st.button("Get Answer"):
             answer = get_answer(user_query)
             st.subheader("Answer:")
             st.write(answer)
+        # Add to chat history
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
+        st.session_state.chat_history.append((user_query, answer))
     else:
         st.warning("Please enter a question before searching.")
 # Add a section for displaying recent questions and answers
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
-if user_query and 'answer' in locals():
-    st.session_state.chat_history.append((user_query, answer))
-if st.session_state.chat_history:
+if 'chat_history' in st.session_state and st.session_state.chat_history:
     st.header("Recent Questions and Answers")
     for i, (q, a) in enumerate(reversed(st.session_state.chat_history[-5:])):
         with st.expander(f"Q: {q}"):
