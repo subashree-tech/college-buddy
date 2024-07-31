@@ -147,8 +147,8 @@ st.header("Popular Questions")
 selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
 for question in selected_questions:
     if st.button(question):
-        answers = get_answer(question)
-        st.write(answers)
+        answer = get_answer(question)
+        st.write(answer)
 user_query = st.text_input("What would you like to know about the uploaded documents?")
 if st.button("Get Answer"):
     if user_query:
