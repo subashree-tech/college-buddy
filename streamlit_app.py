@@ -145,30 +145,19 @@ with st.sidebar:
 st.header("Popular Questions")
 # Randomly select 3 questions
 selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
-for i, question in enumerate(selected_questions):
-    # Create a unique key for each button
-    button_key = f"popular_question_{i}"
-    # Initialize the button state if it doesn't exist
-    if button_key not in st.session_state:
-        st.session_state[button_key] = False
-    if st.button(question, key=button_key):
-        # Toggle the button state
-        st.session_state[button_key] = not st.session_state[button_key]
-    # If the button is pressed (state is True), process the question
-    if st.session_state[button_key]:
+for question in selected_questions:
+    if st.button(question):
         with st.spinner("Searching for the best answer..."):
             answer = get_answer(question)
-            st.subheader(f"Answer to: {question}")
+            st.subheader("Answer:")
             st.write(answer)
         # Add to chat history
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
         st.session_state.chat_history.append((question, answer))
-        # Reset the button state
-        st.session_state[button_key] = False
 st.header("Ask Your Own Question")
 user_query = st.text_input("What would you like to know about the uploaded documents?")
-if st.button("Get Answer", key="user_query_button"):
+if st.button("Get Answer"):
     if user_query:
         with st.spinner("Searching for the best answer..."):
             answer = get_answer(user_query)
