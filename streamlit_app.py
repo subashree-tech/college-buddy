@@ -25,6 +25,19 @@ if INDEX_NAME not in pc.list_indexes().names():
         spec=ServerlessSpec(cloud='aws', region='us-east-1')
     )
 index = pc.Index(INDEX_NAME)
+# List of example questions
+EXAMPLE_QUESTIONS = [
+    "What are the steps to declare a major at Texas Tech University",
+    "What are the GPA and course requirements for declaring a major in the Rawls College of Business?",
+    "How can new students register for the Red Raider Orientation (RRO)",
+    "What are the key components of the Texas Tech University Code of Student Conduct",
+    "What resources are available for students reporting incidents of misconduct at Texas Tech University",
+    "What are the guidelines for amnesty provisions under the Texas Tech University Code of Student Conduct",
+    "How does Texas Tech University handle academic misconduct, including plagiarism and cheating",
+    "What are the procedures for resolving student misconduct through voluntary resolution or formal hearings",
+    "What are the rights and responsibilities of students during the investigative process for misconduct at Texas Tech University",
+    "How can students maintain a healthy lifestyle, including nutrition and fitness, while attending Texas Tech University"
+]
 # Function to extract text from DOCX
 def extract_text_from_docx(file):
     doc = Document(file)
@@ -128,6 +141,12 @@ with st.sidebar:
         st.subheader("Uploaded Documents")
         st.text(f"Total token count: {total_token_count}")
 # Main content area
+st.header("Popular Questions")
+# Randomly select 3 questions
+selected_questions = random.sample(EXAMPLE_QUESTIONS, 3)
+for question in selected_questions:
+    if st.button(question):
+        get_answer(question)
 user_query = st.text_input("What would you like to know about the uploaded documents?")
 if st.button("Get Answer"):
     if user_query:
